@@ -12,7 +12,7 @@ app.config.update(dict(
     SECRET_KEY=base64.b64encode(os.urandom(64)).decode('utf-8'),
     SERVER_NAME='127.0.0.1:5555',
     SENSEBOX_ID="605f498077a88b001bba3dc0",
-    SENSEBOX_AUTHORIZATION="a85c061d22368c73c043d3c0301762c1e8d7e33bb997b4e194e9d1c432530478",
+    SENSEBOX_AUTHORIZATION=open("osm-credentials.txt", "r").read().split("\n")[2],
 ))
 initialize_osm(app.config)
 
