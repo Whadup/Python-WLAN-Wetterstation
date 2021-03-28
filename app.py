@@ -21,7 +21,7 @@ initialize_osm(app.config)
 def update():
     print(request.args)
     local_time = datetime.utcnow()
-    
+
     # get the fields
     sensor_values = {}
     for argument in request.args:
@@ -32,9 +32,11 @@ def update():
             else:
                 sensor_value = request.args.get(argument)
             sensor_values[sensor_name] = sensor_value
-    print(sensor_values)
+
+
+    # push to opensensormap
     timestamp = local_time.isoformat() + "Z"
-    
+
     for sensor_name in sensor_values:
         if sensor_name in current_app.config["SENSOR_IDS"]:
             _id = current_app.config["SENSOR_IDS"][sensor_name]
@@ -49,11 +51,9 @@ def update():
             current_app.osm_data.clear()
         except Exception as e:
             print(e)
-    # push to opensensormap
     return Response(status=200)
 
 
 
 if __name__ == "__main__":
-    # init_db()
     app.run()
