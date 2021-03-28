@@ -3,9 +3,9 @@ import base64, os
 from flask import Flask, Response
 from flask import request
 from flask import current_app
+import requests
 from fields import fields, processing
 from osm import *
-import requests.cookies
 app = Flask(__name__)
 app.osm_data = []
 app.config.update(dict(
