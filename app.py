@@ -1,11 +1,16 @@
+import json
+import base64
+import os
 from datetime import datetime
-import base64, os
 from flask import Flask, Response
 from flask import request
 from flask import current_app
 import requests
 from fields import fields, processing
-from osm import *
+from osm import initialize_osm, SENSORS
+
+
+
 app = Flask(__name__)
 app.osm_data = []
 app.config.update(dict(
@@ -49,7 +54,11 @@ def update():
             response = requests.post(url, json=current_app.osm_data, headers={"Authorization": current_app.config["SENSEBOX_AUTHORIZATION"]})
             response.raise_for_status()
             current_app.osm_data.clear()
-        except Exception as e:
+        except requests.ConnectionError as e:
+            print(e)
+        except requests.Timeout as e:
+            print(e)
+        except request.HTTPError as e:
             print(e)
     return Response(status=200)
 

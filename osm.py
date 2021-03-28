@@ -1,14 +1,11 @@
-import sys
+"""
+OpenSensemap Sensor configuration
+"""
 import requests
-from requests_jwt import JWTAuth
 
-import logging
-import json
 
 SENSOR_NAMES = ["Temperatur", "Luftfeuchte", "Luftdruck relativ", "Luftdruck absolut", "Taupunkt", "gefühlte Temperatur", "Sonnenstrahlung", "Windgeschwindigkeit", "Windrichtung", "UV-Index", "Regen-Rate"]
-  #Messwertezuordnung (Reihenfolge muss zur Sensor-ID identisch sein!)
 SENSOR_FIELDS = ["tempf", "humidity", "baromrelin", "baromabsin", "dewptf", "windchillf", "solarradiation", "windspeedmph", "winddir", "uv", "rainratein"]
-  #Sensorendefinitionen
 SENSOR_ICONS = ["osem-thermometer", "osem-humidity", "osem-barometer", "osem-barometer", "osem-thermometer", "osem-thermometer", "osem-brightness", "osem-particulate-matter", "osem-particulate-matter", "osem-brightness", "osem-umbrella"]
 SENSOR_UNITS = ['°C', '%H', 'hPa', 'hPa', '°C', '°C', 'W/m²', 'km/h', '°', 'Index', 'mm/h']
 SENSORS = list(zip(SENSOR_NAMES, SENSOR_FIELDS, SENSOR_ICONS, SENSOR_UNITS))
@@ -36,10 +33,9 @@ def initialize_osm(config):
 
 def get_sensors(config):
     url = f"https://api.opensensemap.org/boxes/{config['SENSEBOX_ID']}"
-    
+
     try:
         sensor = requests.get(url).json()
-        # if len(sensor.get("sensors", [])) == len(SENSORS):
         config["SENSOR_IDS"] = {}
         delete_sensors = []
         for s in sensor["sensors"]:
@@ -67,18 +63,8 @@ def get_sensors(config):
             print("Matched all sensors")
             print(config["SENSOR_IDS"])
             return True
-        else:
-            print("Not all sensors found. Going to recreate all of them. Might result in chaos...")
-            return False
-            # print("we are gonna delete the old sensors. this shouldn't remain in the code...")
-            # sensors = []
-            # for s in sensors:
-            #     sensors.append(dict(deleted="true",_id=s["605741e529171e001b21cd17"]))
-            # request = dict(sensors=sensors)
-            # url = f"https://api.opensensemap.org/boxes/{config['SENSEBOX_ID']}"
-            # resp = requests.put(url, json=request, headers={"Authorization": f"Bearer {config['JWT']}"})
-            # print(resp)
-            # print("Wrong number of Sensors")
+        print("Not all sensors found. Going to recreate all of them. Might result in chaos...")
+        return False
     except Exception as e:
         print(e)
         return False
@@ -87,7 +73,7 @@ def register_sensors(config):
     # return
     sensors = []
     for sensor in SENSORS:
-        name, field, icon, unit = sensor
+        name, _, icon, unit = sensor
         sensors.append(dict(
             new="true",
             edited="true",
@@ -98,7 +84,6 @@ def register_sensors(config):
         ))
     request = dict(sensors=sensors)
     url = f"https://api.opensensemap.org/boxes/{config['SENSEBOX_ID']}"
-    
     resp = requests.put(url, json=request, headers={"Authorization": f"Bearer {config['JWT']}"})
     print(resp.text)
 
