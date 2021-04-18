@@ -1,6 +1,6 @@
 # :partly_sunny: WLAN-Wetterstation
 <br/><br/>
-[![License](https://img.shields.io/github/license/SBorg2014/WLAN-Wetterstation.svg)](https://github.com/SBorg2014/WLAN-Wetterstation/blob/master/LICENSE). 
+[![License](https://img.shields.io/github/license/SBorg2014/WLAN-Wetterstation.svg)](https://github.com/SBorg2014/WLAN-Wetterstation/blob/master/LICENSE)
 
 
 Implementiert einen kleinen Wunderground-Server als flask python-webapp und schafft eine Verbindung zu einer WLAN-Wetterstation. 
