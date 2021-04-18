@@ -2,7 +2,7 @@
 OpenSensemap Sensor configuration
 """
 import requests
-
+from flask import current_app
 
 SENSOR_NAMES = ["Temperatur", "Luftfeuchte", "Luftdruck relativ", "Luftdruck absolut", "Taupunkt", "gefühlte Temperatur", "Sonnenstrahlung", "Windgeschwindigkeit", "Windrichtung", "UV-Index", "Regen-Rate"]
 SENSOR_FIELDS = ["tempf", "humidity", "baromrelin", "baromabsin", "dewptf", "windchillf", "solarradiation", "windspeedmph", "winddir", "uv", "rainratein"]
@@ -25,11 +25,11 @@ def login(config):
 def relogin(config):
     pass
 
-def initialize_osm(config):
-    if not login(config):
+def initialize_osm():
+    if not login(current_app.config):
         raise RuntimeError("Login failed")
-    if not get_sensors(config):
-        register_sensors(config)
+    if not get_sensors(current_app.config):
+        register_sensors(current_app.config)
 
 def get_sensors(config):
     url = f"https://api.opensensemap.org/boxes/{config['SENSEBOX_ID']}"

@@ -149,13 +149,13 @@ _processing = [
     None
 ]
 
-fields = {}
-processing = {}
+FIELDS = {}
+PROCESSING = {}
 for v, p in zip(_fields, _processing):
     if isinstance(v, tuple):
         for u in v:
-            fields[u] = v[0]
-            processing[v[0]] = p
+            FIELDS[u] = v[0]
+            PROCESSING[v[0]] = p
     else:
-        fields[v] = v
-        processing[v] = p
+        FIELDS[v] = v
+        PROCESSING[v] = p

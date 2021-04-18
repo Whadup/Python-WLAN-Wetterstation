@@ -6,7 +6,7 @@ from flask import Flask, Response
 from flask import request
 from flask import current_app
 import requests
-from fields import fields, processing
+from fields import FIELDS, PROCESSING
 from osm import initialize_osm, SENSORS
 
 
@@ -15,11 +15,12 @@ app = Flask(__name__)
 app.osm_data = []
 app.config.update(dict(
     SECRET_KEY=base64.b64encode(os.urandom(64)).decode('utf-8'),
-    SERVER_NAME='127.0.0.1:5555',
+    # SERVER_NAME='0.0.0.0:5555',
     SENSEBOX_ID="605f498077a88b001bba3dc0",
     SENSEBOX_AUTHORIZATION=open("osm-credentials.txt", "r").read().split("\n")[2],
 ))
-initialize_osm(app.config)
+with app.app_context():
+    initialize_osm()
 
 
 @app.route("/weatherstation/updateweatherstation.php")
@@ -27,13 +28,13 @@ def update():
     print(request.args)
     local_time = datetime.utcnow()
 
-    # get the fields
+    # get the FIELDS
     sensor_values = {}
     for argument in request.args:
-        if argument in fields:
-            sensor_name = fields[argument]
-            if processing.get(sensor_name, None) is not None:
-                sensor_value = processing.get(sensor_name)(request.args.get(argument))
+        if argument in FIELDS:
+            sensor_name = FIELDS[argument]
+            if PROCESSING.get(sensor_name, None) is not None:
+                sensor_value = PROCESSING.get(sensor_name)(request.args.get(argument))
             else:
                 sensor_value = request.args.get(argument)
             sensor_values[sensor_name] = sensor_value
