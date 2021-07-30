@@ -67,6 +67,7 @@ _WIND_DIRS = [
 
 def winddir(x):
     #WINDRICHTUNG=${WINDDIRS[$(round ${MESSWERTE[$1]}/22.5 0)]}
+    return float(x)
     return _WIND_DIRS[int(float(x) / 22.5)]
 
 def convert_luftdruck(x):

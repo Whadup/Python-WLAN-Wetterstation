@@ -25,7 +25,7 @@ with app.app_context():
 
 @app.route("/weatherstation/updateweatherstation.php")
 def update():
-    print(request.args)
+    #print(request.args)
     local_time = datetime.utcnow()
 
     # get the FIELDS
@@ -47,11 +47,11 @@ def update():
         if sensor_name in current_app.config["SENSOR_IDS"]:
             _id = current_app.config["SENSOR_IDS"][sensor_name]
             val = sensor_values[sensor_name]
-            current_app.osm_data.append(dict(sensor=_id, value=val, createdAt=timestamp))
-    if True or len(current_app.osm_data) > len(SENSORS) * 4:
+            current_app.osm_data.append(dict(sensor=_id, value=str(val), createdAt=timestamp))
+    if len(current_app.osm_data) > len(SENSORS) * 4:
         url = f"https://api.opensensemap.org/boxes/{current_app.config['SENSEBOX_ID']}/data"
         try:
-            print(json.dumps(current_app.osm_data))
+            #print(json.dumps(current_app.osm_data))
             response = requests.post(url, json=current_app.osm_data, headers={"Authorization": current_app.config["SENSEBOX_AUTHORIZATION"]})
             response.raise_for_status()
             current_app.osm_data.clear()
