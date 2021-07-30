@@ -3,11 +3,15 @@
 [![License](https://img.shields.io/github/license/SBorg2014/WLAN-Wetterstation.svg)](https://github.com/SBorg2014/WLAN-Wetterstation/blob/master/LICENSE)
 
 
-Implementiert einen kleinen Wunderground-Server als flask python-webapp und schafft eine Verbindung zu einer WLAN-Wetterstation. 
-Es stellt die Wetterdaten in [openSenseMap](https://opensensemap.org) zur Verfügung. (__Projekt läuft nur unter Linux__)<br>
-Portiert [SBorg2014/WLAN-Wetterstation](https://github.com/SBorg2014/WLAN-Wetterstation) from bash to a lightweight python script.
+Implements a small Wunderground-Server in a flask python-webapp und establishes a connection to a WiFi weather station.
+Streams the current weather condition data to [openSenseMap](https://opensensemap.org). (__Runs on linux, e.g. on Raspberry Pi OS__)<br>
+Adapts [SBorg2014/WLAN-Wetterstation](https://github.com/SBorg2014/WLAN-Wetterstation) from bash to a lightweight python script.
 
-## Verwendung
+## Beispiel
+
+Broadcasting the current weather conditions in our Dortmund Schrebergarten. [Check it out on OpenSenseMap](https://opensensemap.org/explore/605f498077a88b001bba3dc0).
+
+## Usage
 ```bash
 git clone https://github.com/Whadup/WLAN-Wetterstation
 cd WLAN-Wetterstation
@@ -16,7 +20,10 @@ cd WLAN-Wetterstation
 printf "{email}\n{password}\n{sensebox-auth-token}\n" > osm-credentials.txt
 flask run
 ```
- 
+## Compatible Hardware
+
+List taken from [@SBorg2014](https://github.com/SBorg2014/):
+
  Die Wetterstation muss dazu in der Lage sein ihre Daten im "Wunderground"-Format zu senden.<br><br>
  Bisher getestete Stationen:
 - DNT Weatherscreen PRO
